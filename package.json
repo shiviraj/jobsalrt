@@ -1,0 +1,38 @@
+{
+  "name": "jAdminServer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "env-cmd ./config/test.env nyc mocha --exit",
+    "eslint": "eslint . --ext .js",
+    "preCommit": "npm test && npm run eslint",
+    "dev": "env-cmd ./config/dev.env nodemon server.js",
+    "start": "node server.js",
+    "beforeDeploy": "./deploy.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shiviraj/jadminServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shiviraj/jadminServer/issues"
+  },
+  "homepage": "https://github.com/shiviraj/jadminServer#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.4"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "env-cmd": "^8.0.2",
+    "eslint": "^7.8.1",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "supertest": "^4.0.2"
+  }
+}
