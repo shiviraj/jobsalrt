@@ -27,4 +27,5 @@ jobs:
 
       - name: Send Notification on Slack
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":" Successfully deployed: $(git log -n 1 --format=%B)"}' ${{secrets.SLACK_HOOK}}
+          msg="$(git log -n 1 --format=%B)"
+          curl -X POST -H 'Content-type: application/json' --data '{"text":" Successfully Deployed From '$msg'"}' ${{secrets.SLACK_HOOK}}
