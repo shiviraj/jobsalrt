@@ -15,4 +15,43 @@ const servePost = async (req, res) => {
   }
 };
 
-module.exports = { servePost, serveAllPost };
+const serveLatestJobs = async (req, res) => {
+  const post = await Post.getLatestJobs();
+  res.send(post);
+};
+
+const serveAdmitCards = async (req, res) => {
+  const post = await Post.getAdmitCards();
+  res.send(post);
+};
+
+const serveResults = async (req, res) => {
+  const post = await Post.getResults();
+  res.send(post);
+};
+
+const serveAnswerKey = async (req, res) => {
+  const post = await Post.getAnswerKey();
+  res.send(post);
+};
+
+const serveSyllabus = async (req, res) => {
+  const post = await Post.getSyllabus();
+  res.send(post);
+};
+
+const serveAdmission = async (req, res) => {
+  const post = await Post.getAdmission();
+  res.send(post);
+};
+
+module.exports = {
+  servePost,
+  serveAllPost,
+  serveLatestJobs,
+  serveAdmitCards,
+  serveResults,
+  serveAnswerKey,
+  serveSyllabus,
+  serveAdmission,
+};

@@ -7,4 +7,39 @@ const getAllPosts = async () => {
     .sort({ 'general.last_date': -1 });
 };
 
-module.exports = { findById, getAllPosts };
+const getLatestJobs = async () => {
+  return await Post.find({
+    'general.last_date': { $gt: new Date().getTime() },
+  }).select('title _id');
+};
+
+const getAdmitCards = async () => {
+  return await Post.find({ state: { $all: 'admit_card' } }).select('title _id');
+};
+
+const getResults = async () => {
+  return await Post.find({ state: { $all: 'result' } }).select('title _id');
+};
+
+const getAnswerKey = async () => {
+  return await Post.find({ state: { $all: 'answer_key' } }).select('title _id');
+};
+
+const getSyllabus = async () => {
+  return await Post.find({ state: { $all: 'syllabus' } }).select('title _id');
+};
+
+const getAdmission = async () => {
+  return await Post.find({ state: { $all: 'admission' } }).select('title _id');
+};
+
+module.exports = {
+  findById,
+  getAllPosts,
+  getLatestJobs,
+  getAdmitCards,
+  getResults,
+  getAnswerKey,
+  getAdmission,
+  getSyllabus,
+};
