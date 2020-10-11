@@ -1,5 +1,10 @@
 const Post = require('./wrapper/post');
 
+const serveAllPost = async (req, res) => {
+  const post = await Post.getAllPosts();
+  res.send(post);
+};
+
 const servePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -10,4 +15,4 @@ const servePost = async (req, res) => {
   }
 };
 
-module.exports = { servePost };
+module.exports = { servePost, serveAllPost };

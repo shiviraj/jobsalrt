@@ -6,11 +6,6 @@ require('./db/connect');
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log(req.method, req.path, new Date());
-  next();
-});
-
 app.use(cookieParser());
 app.use(express.static('./public'));
 app.use(express.json({ limit: '1mb' }));
