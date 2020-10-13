@@ -20,5 +20,5 @@ const PostSchema = new mongoose.Schema({
   others: { type: Object },
 });
 
-const Post = mongoose.model('post', PostSchema);
+const Post = mongoose.model('verifiedPost', PostSchema);
 module.exports = Post;

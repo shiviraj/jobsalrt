@@ -1,3 +1,4 @@
+const lodash = require('lodash');
 const Post = require('../../models/post');
 
 const findById = async (id) => await Post.findById(id);
@@ -33,6 +34,13 @@ const getAdmission = async () => {
   return await Post.find({ state: { $all: 'admission' } }).select('title _id');
 };
 
+const getLocations = async () => {
+  const locations = await Post.find({}).select('general.location');
+  const result = locations.map(({ general }) => general.location.split(','));
+  const res = lodash.flatten(result).map((item) => item.trim());
+  return lodash.sortBy(lodash.uniq(res));
+};
+
 module.exports = {
   findById,
   getAllPosts,
@@ -42,4 +50,5 @@ module.exports = {
   getAnswerKey,
   getAdmission,
   getSyllabus,
+  getLocations,
 };
