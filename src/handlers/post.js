@@ -50,6 +50,11 @@ const serveAllLocations = async (req, res) => {
   res.send(locations);
 };
 
+const servePostsByLocation = async (req, res) => {
+  const posts = await Post.findPostsByLocation(req.body.location);
+  res.send(posts);
+};
+
 module.exports = {
   servePost,
   serveAllPost,
@@ -60,4 +65,5 @@ module.exports = {
   serveSyllabus,
   serveAdmission,
   serveAllLocations,
+  servePostsByLocation,
 };

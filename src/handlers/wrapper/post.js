@@ -41,6 +41,12 @@ const getLocations = async () => {
   return lodash.sortBy(lodash.uniq(res));
 };
 
+const findPostsByLocation = async (location) => {
+  return await Post.find({
+    'general.location': location.replace(/-/g, ' '),
+  }).select('_id title url general');
+};
+
 module.exports = {
   findById,
   getAllPosts,
@@ -51,4 +57,5 @@ module.exports = {
   getAdmission,
   getSyllabus,
   getLocations,
+  findPostsByLocation,
 };

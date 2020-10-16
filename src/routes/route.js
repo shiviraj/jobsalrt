@@ -9,6 +9,7 @@ const {
   serveSyllabus,
   serveAdmission,
   serveAllLocations,
+  servePostsByLocation,
 } = require('../handlers/post');
 
 const route = new express.Router();
@@ -22,5 +23,6 @@ route.get('/syllabus', serveSyllabus);
 route.get('/admission', serveAdmission);
 route.get('/getLocations', serveAllLocations);
 route.get('/post/:id', servePost);
+route.post('/postsByLocation', servePostsByLocation);
 
 module.exports = route;
