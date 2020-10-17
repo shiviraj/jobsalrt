@@ -2,7 +2,7 @@ const Post = require('./wrapper/post');
 
 const serveAllPost = async (req, res) => {
   const post = await Post.getAllPosts();
-  res.send(post.reverse());
+  res.send(post);
 };
 
 const servePost = async (req, res) => {
