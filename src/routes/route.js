@@ -8,8 +8,8 @@ const {
   serveAnswerKey,
   serveSyllabus,
   serveAdmission,
-  serveAllLocations,
-  servePostsByLocation,
+  serveList,
+  servePostsBy,
 } = require('../handlers/post');
 
 const route = new express.Router();
@@ -21,8 +21,8 @@ route.get('/results', serveResults);
 route.get('/answerKey', serveAnswerKey);
 route.get('/syllabus', serveSyllabus);
 route.get('/admission', serveAdmission);
-route.get('/getLocations', serveAllLocations);
 route.get('/post/:id', servePost);
-route.post('/postsByLocation', servePostsByLocation);
+route.post('/getList', serveList);
+route.post('/postsBy', servePostsBy);
 
 module.exports = route;

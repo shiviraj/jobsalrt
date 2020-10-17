@@ -45,13 +45,13 @@ const serveAdmission = async (req, res) => {
   res.send(post);
 };
 
-const serveAllLocations = async (req, res) => {
-  const locations = await Post.getLocations();
-  res.send(locations);
+const serveList = async (req, res) => {
+  const list = await Post.getList(req.body.name);
+  res.send(list);
 };
 
-const servePostsByLocation = async (req, res) => {
-  const posts = await Post.findPostsByLocation(req.body.location);
+const servePostsBy = async (req, res) => {
+  const posts = await Post.findPostsBy(req.body);
   res.send(posts);
 };
 
@@ -64,6 +64,6 @@ module.exports = {
   serveAnswerKey,
   serveSyllabus,
   serveAdmission,
-  serveAllLocations,
-  servePostsByLocation,
+  serveList,
+  servePostsBy,
 };

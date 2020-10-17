@@ -47,17 +47,24 @@ const getAdmission = async () => {
     .limit(50);
 };
 
-const getLocations = async () => {
-  const locations = await Post.find({}).select('general.location');
-  const result = locations.map(({ general }) => general.location.split(','));
-  const res = lodash.flatten(result).map((item) => item.trim());
+const getList = async (name) => {
+  const key = name === 'qualification' ? 'qualification_required' : name;
+  const list = await Post.find({}).select(`general.${key}`);
+  const result = list.reduce((res, { general }) => {
+    return res.concat(general[key] ? general[key].split(',') : []);
+  }, []);
+  const res = lodash
+    .flatten(result)
+    .map((item) => item.replace(/\(.*\)/g, '').trim());
   return lodash.sortBy(lodash.uniq(res));
 };
 
-const findPostsByLocation = async (location) => {
-  return await Post.find({
-    'general.location': location.replace(/-/g, ' '),
-  }).select('_id title url general');
+const findPostsBy = async ({ name, jobsBy = '' }) => {
+  const key = name === 'qualification' ? 'qualification_required' : name;
+  const regex = { $regex: '.*' + jobsBy.replace(/-/g, ' ') + '.*' };
+  return await Post.find({ [`general.${key}`]: regex })
+    .select('_id title url general')
+    .sort({ created_at: -1 });
 };
 
 module.exports = {
@@ -69,6 +76,6 @@ module.exports = {
   getAnswerKey,
   getAdmission,
   getSyllabus,
-  getLocations,
-  findPostsByLocation,
+  getList,
+  findPostsBy,
 };
