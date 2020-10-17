@@ -47,11 +47,16 @@ const getAdmission = async () => {
     .limit(50);
 };
 
+const splitText = (general, key) => {
+  if (!general[key]) return [];
+  return key === 'company' ? general[key] : general[key].split(',');
+};
+
 const getList = async (name) => {
   const key = name === 'qualification' ? 'qualification_required' : name;
   const list = await Post.find({}).select(`general.${key}`);
   const result = list.reduce((res, { general }) => {
-    return res.concat(general[key] ? general[key].split(',') : []);
+    return res.concat(splitText(general, key));
   }, []);
   const res = lodash
     .flatten(result)
