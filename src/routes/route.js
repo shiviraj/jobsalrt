@@ -10,10 +10,12 @@ const {
   serveAdmission,
   serveList,
   servePostsBy,
+  serveRecentPost,
 } = require('../handlers/post');
 
 const route = new express.Router();
 
+route.get('/recentPosts', serveRecentPost);
 route.get('/allJobs', serveAllPost);
 route.get('/latestJobs', serveLatestJobs);
 route.get('/admitCard', serveAdmitCards);

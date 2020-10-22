@@ -1,5 +1,10 @@
 const Post = require('./wrapper/post');
 
+const serveRecentPost = async (req, res) => {
+  const post = await Post.getRecentPosts();
+  res.send(post);
+};
+
 const serveAllPost = async (req, res) => {
   const post = await Post.getAllPosts();
   res.send(post);
@@ -56,6 +61,7 @@ const servePostsBy = async (req, res) => {
 };
 
 module.exports = {
+  serveRecentPost,
   servePost,
   serveAllPost,
   serveLatestJobs,

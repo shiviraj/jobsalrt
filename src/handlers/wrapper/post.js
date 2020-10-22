@@ -2,6 +2,20 @@ const lodash = require('lodash');
 const Post = require('../../models/post');
 
 const findById = async (id) => await Post.findById(id);
+
+const getRecentPosts = async () => {
+  const posts = {};
+  posts.added = await Post.find()
+    .select('title _id')
+    .sort({ created_at: -1 })
+    .limit(8);
+  posts.modified = await Post.find()
+    .select('title _id')
+    .sort({ modified_at: -1 })
+    .limit(8);
+  return posts;
+};
+
 const getAllPosts = async () => {
   return await Post.find().select('title _id').sort({ created_at: -1 });
 };
@@ -73,6 +87,7 @@ const findPostsBy = async ({ name, jobsBy = '' }) => {
 };
 
 module.exports = {
+  getRecentPosts,
   findById,
   getAllPosts,
   getLatestJobs,
