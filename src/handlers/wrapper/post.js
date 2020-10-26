@@ -86,6 +86,20 @@ const findPostsBy = async ({ name, jobsBy = '' }) => {
     .sort({ created_at: -1 });
 };
 
+const findSearchedPosts = async (value) => {
+  const $regex = new RegExp('.*' + value + '.*', 'i');
+  return await Post.find({
+    $or: [
+      { title: { $regex } },
+      { 'general.location': { $regex } },
+      { 'general.company': { $regex } },
+      { 'general.qualification_required': { $regex } },
+    ],
+  })
+    .select('_id title url general')
+    .sort({ created_at: -1 });
+};
+
 module.exports = {
   getRecentPosts,
   findById,
@@ -98,4 +112,5 @@ module.exports = {
   getSyllabus,
   getList,
   findPostsBy,
+  findSearchedPosts,
 };

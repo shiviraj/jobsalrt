@@ -60,6 +60,11 @@ const servePostsBy = async (req, res) => {
   res.send(posts);
 };
 
+const serveSearchedPosts = async (req, res) => {
+  const posts = await Post.findSearchedPosts(req.body.value);
+  res.send(posts);
+};
+
 module.exports = {
   serveRecentPost,
   servePost,
@@ -72,4 +77,5 @@ module.exports = {
   serveAdmission,
   serveList,
   servePostsBy,
+  serveSearchedPosts,
 };

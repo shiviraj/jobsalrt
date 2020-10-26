@@ -14,6 +14,7 @@ const {
   serveList,
   servePostsBy,
   serveRecentPost,
+  serveSearchedPosts,
 } = require('../handlers/post');
 
 const route = new express.Router();
@@ -29,6 +30,7 @@ route.get('/admission', serveAdmission);
 route.get('/post/:id', servePost);
 route.post('/getList', serveList);
 route.post('/postsBy', servePostsBy);
+route.post('/search', serveSearchedPosts);
 route.post('/shareFeedback', saveFeedback);
 
 module.exports = route;
