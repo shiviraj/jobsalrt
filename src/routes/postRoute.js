@@ -1,4 +1,7 @@
 const express = require('express');
+
+const { saveFeedback } = require('../handlers/feedback');
+
 const {
   servePost,
   serveAllPost,
@@ -26,5 +29,6 @@ route.get('/admission', serveAdmission);
 route.get('/post/:id', servePost);
 route.post('/getList', serveList);
 route.post('/postsBy', servePostsBy);
+route.post('/shareFeedback', saveFeedback);
 
 module.exports = route;
