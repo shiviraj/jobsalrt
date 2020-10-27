@@ -80,7 +80,9 @@ const getList = async (name) => {
 
 const findPostsBy = async ({ name, jobsBy = '' }) => {
   const key = name === 'qualification' ? 'qualification_required' : name;
-  const regex = { $regex: '.*' + jobsBy.replace(/-/g, ' ') + '.*' };
+  const regex = {
+    $regex: new RegExp('.*' + jobsBy.replace(/-/g, ' ') + '.*', 'i'),
+  };
   return await Post.find({ [`general.${key}`]: regex })
     .select('_id title url general')
     .sort({ created_at: -1 });

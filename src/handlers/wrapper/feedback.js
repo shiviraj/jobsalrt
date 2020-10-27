@@ -1,4 +1,4 @@
-const Feedback = require('../../models/feebacks');
+const Feedback = require('../../models/feedback');
 
 const save = async (feedbackData) => {
   const feedback = new Feedback(feedbackData);

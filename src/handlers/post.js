@@ -16,7 +16,7 @@ const servePost = async (req, res) => {
     if (!post) res.setStatus(404);
     res.send(post);
   } catch (e) {
-    res.send(500).end();
+    res.sendStatus(500);
   }
 };
 
