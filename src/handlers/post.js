@@ -12,7 +12,7 @@ const serveAllPost = async (req, res) => {
 
 const servePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findByURL(req.params.url);
     if (!post) res.setStatus(404);
     res.send(post);
   } catch (e) {

@@ -72,7 +72,7 @@ describe('Test Post Route', () => {
 
   describe('Get Post By Id', () => {
     it('Should give post of given id', async () => {
-      await request(app).get(`/api/post/${postOneID}`).expect(200);
+      await request(app).get(`/api/post/post-one`).expect(200);
     });
 
     it('Should give 500 errorfor invalid post id', async () => {

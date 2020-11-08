@@ -3,6 +3,8 @@ const Post = require('../../models/post');
 
 const findById = async (id) => await Post.findById(id);
 
+const findByURL = async (url) => await Post.findOne({ url });
+
 const getRecentPosts = async () => {
   const posts = {};
   posts.added = await Post.find()
@@ -17,14 +19,14 @@ const getRecentPosts = async () => {
 };
 
 const getAllPosts = async () => {
-  return await Post.find().select('title _id').sort({ created_at: -1 });
+  return await Post.find().select('title _id url').sort({ created_at: -1 });
 };
 
 const getLatestJobs = async () => {
   return await Post.find({
     'general.last_date': { $gt: new Date().getTime() },
   })
-    .select('title _id')
+    .select('title _id url')
     .sort({ created_at: -1 })
     .limit(50);
 };
@@ -33,31 +35,31 @@ const getAdmitCards = async () => {
   return await Post.find({
     state: { $in: 'admit_card', $nin: 'result' },
   })
-    .select('title _id')
+    .select('title _id url')
     .limit(50);
 };
 
 const getResults = async () => {
   return await Post.find({ state: { $all: 'result' } })
-    .select('title _id')
+    .select('title _id url')
     .limit(50);
 };
 
 const getAnswerKey = async () => {
   return await Post.find({ state: { $all: 'answer_key' } })
-    .select('title _id')
+    .select('title _id url')
     .limit(50);
 };
 
 const getSyllabus = async () => {
   return await Post.find({ state: { $all: 'syllabus' } })
-    .select('title _id')
+    .select('title _id url')
     .limit(50);
 };
 
 const getAdmission = async () => {
   return await Post.find({ state: { $all: 'admission' } })
-    .select('title _id')
+    .select('title _id url')
     .limit(50);
 };
 
@@ -105,6 +107,7 @@ const findSearchedPosts = async (value) => {
 module.exports = {
   getRecentPosts,
   findById,
+  findByURL,
   getAllPosts,
   getLatestJobs,
   getAdmitCards,
