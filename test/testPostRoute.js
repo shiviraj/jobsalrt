@@ -2,12 +2,7 @@ const request = require('supertest');
 const { assert } = require('chai');
 const app = require('../src/app');
 
-const {
-  setupPosts,
-  cleanupPosts,
-  postOneID,
-  noPostID,
-} = require('./fixture/postDB');
+const { setupPosts, cleanupPosts } = require('./fixture/postDB');
 
 describe('Test Post Route', () => {
   beforeEach(setupPosts);

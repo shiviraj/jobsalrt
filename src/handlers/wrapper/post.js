@@ -8,11 +8,11 @@ const findByURL = async (url) => await Post.findOne({ url });
 const getRecentPosts = async () => {
   const posts = {};
   posts.added = await Post.find()
-    .select('title _id')
+    .select('title _id url')
     .sort({ created_at: -1 })
     .limit(8);
   posts.modified = await Post.find()
-    .select('title _id')
+    .select('title _id url')
     .sort({ modified_at: -1 })
     .limit(8);
   return posts;
