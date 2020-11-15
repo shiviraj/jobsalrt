@@ -25,6 +25,7 @@ const getAllPosts = async () => {
 const getLatestJobs = async () => {
   return await Post.find({
     'general.last_date': { $gt: new Date().getTime() },
+    state: { $nin: 'upcoming' },
   })
     .select('title _id url')
     .sort({ created_at: -1 })
