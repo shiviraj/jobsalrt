@@ -8,17 +8,11 @@ describe('Test Post Route', () => {
   beforeEach(setupPosts);
   afterEach(cleanupPosts);
 
-  describe('Recent Posts', () => {
-    it('Should give all recent posts', async () => {
-      const { body } = await request(app).get('/api/recentPosts').expect(200);
-      assert.equal(body.added.length, 2);
-      assert.equal(body.modified.length, 2);
-    });
-  });
-
   describe('All Jobs', () => {
     it('Should give all jobs', async () => {
-      const { body } = await request(app).get('/api/allJobs').expect(200);
+      const { body } = await request(app)
+        .get('/api/allJobs/page/1')
+        .expect(200);
       assert.equal(body.length, 2);
     });
   });

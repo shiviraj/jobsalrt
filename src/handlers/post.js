@@ -1,13 +1,13 @@
 const Post = require('./wrapper/post');
 
-const serveRecentPost = async (req, res) => {
-  const post = await Post.getRecentPosts();
+const serveAllPost = async (req, res) => {
+  const post = await Post.getAllPosts(req.params.pageNo);
   res.send(post);
 };
 
-const serveAllPost = async (req, res) => {
-  const post = await Post.getAllPosts();
-  res.send(post);
+const serveAllJobsPageCount = async (req, res) => {
+  const count = await Post.getAllPostsPageCount();
+  res.send({ count });
 };
 
 const servePost = async (req, res) => {
@@ -66,9 +66,9 @@ const serveSearchedPosts = async (req, res) => {
 };
 
 module.exports = {
-  serveRecentPost,
   servePost,
   serveAllPost,
+  serveAllJobsPageCount,
   serveLatestJobs,
   serveAdmitCards,
   serveResults,

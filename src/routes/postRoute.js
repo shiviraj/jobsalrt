@@ -5,6 +5,7 @@ const { saveFeedback } = require('../handlers/feedback');
 const {
   servePost,
   serveAllPost,
+  serveAllJobsPageCount,
   serveLatestJobs,
   serveAdmitCards,
   serveResults,
@@ -13,14 +14,13 @@ const {
   serveAdmission,
   serveList,
   servePostsBy,
-  serveRecentPost,
   serveSearchedPosts,
 } = require('../handlers/post');
 
 const route = new express.Router();
 
-route.get('/recentPosts', serveRecentPost);
-route.get('/allJobs', serveAllPost);
+route.get('/allJobs/page/:pageNo', serveAllPost);
+route.get('/allJobs/pageCount', serveAllJobsPageCount);
 route.get('/latestJobs', serveLatestJobs);
 route.get('/admitCard', serveAdmitCards);
 route.get('/results', serveResults);

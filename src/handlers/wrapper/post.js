@@ -1,79 +1,66 @@
 const lodash = require('lodash');
 const Post = require('../../models/post');
+const LIMIT = 50;
+
+const findTotalPages = async (queryObject = {}) => {
+  const postCount = await Post.find(queryObject).count();
+  return lodash.ceil(postCount / LIMIT);
+};
+
+const findPosts = async (queryObject = {}, pageNo = 1) => {
+  return await Post.find(queryObject)
+    .select('title _id url general')
+    .sort({ created_at: -1 })
+    .skip((pageNo - 1) * LIMIT)
+    .limit(LIMIT);
+};
 
 const findById = async (id) => await Post.findById(id);
 
 const findByURL = async (url) => await Post.findOne({ url });
 
-const getRecentPosts = async () => {
-  const posts = {};
-  posts.added = await Post.find()
-    .select('title _id url')
-    .sort({ created_at: -1 })
-    .limit(8);
-  posts.modified = await Post.find()
-    .select('title _id url')
-    .sort({ modified_at: -1 })
-    .limit(8);
-  return posts;
+const getAllPosts = async (pageNo) => await findPosts({}, pageNo);
+const getAllPostsPageCount = async () => await findTotalPages({});
+
+const getLatestJobs = async (pageNo) => {
+  return await findPosts(
+    {
+      'general.last_date': { $gt: new Date().getTime() },
+      state: { $nin: 'upcoming' },
+    },
+    pageNo
+  );
 };
 
-const getAllPosts = async () => {
-  return await Post.find().select('title _id url').sort({ created_at: -1 });
+const getAdmitCards = async (pageNo) => {
+  return await findPosts(
+    { state: { $in: 'admit_card', $nin: 'result' } },
+    pageNo
+  );
 };
 
-const getLatestJobs = async () => {
-  return await Post.find({
-    'general.last_date': { $gt: new Date().getTime() },
-    state: { $nin: 'upcoming' },
-  })
-    .select('title _id url')
-    .sort({ created_at: -1 })
-    .limit(50);
+const getResults = async (pageNo) => {
+  return await findPosts({ state: { $all: 'result' } }, pageNo);
 };
 
-const getAdmitCards = async () => {
-  return await Post.find({
-    state: { $in: 'admit_card', $nin: 'result' },
-  })
-    .select('title _id url')
-    .limit(50);
+const getAnswerKey = async (pageNo) => {
+  return await findPosts({ state: { $all: 'answer_key' } }, pageNo);
 };
 
-const getResults = async () => {
-  return await Post.find({ state: { $all: 'result' } })
-    .select('title _id url')
-    .limit(50);
+const getSyllabus = async (pageNo) => {
+  return await findPosts({ state: { $all: 'syllabus' } }, pageNo);
 };
 
-const getAnswerKey = async () => {
-  return await Post.find({ state: { $all: 'answer_key' } })
-    .select('title _id url')
-    .limit(50);
+const getAdmission = async (pageNo) => {
+  return await findPosts({ state: { $all: 'admission' } }, pageNo);
 };
 
-const getSyllabus = async () => {
-  return await Post.find({ state: { $all: 'syllabus' } })
-    .select('title _id url')
-    .limit(50);
-};
-
-const getAdmission = async () => {
-  return await Post.find({ state: { $all: 'admission' } })
-    .select('title _id url')
-    .limit(50);
-};
-
-const splitText = (general, key) => {
-  if (!general[key]) return [];
-  return key === 'company' ? general[key] : general[key].split(',');
-};
-
+// need to refactor
 const getList = async (name) => {
   const key = name === 'qualification' ? 'qualification_required' : name;
   const list = await Post.find({}).select(`general.${key}`);
   const result = list.reduce((res, { general }) => {
-    return res.concat(splitText(general, key));
+    return res.concat(general[key].split(','));
   }, []);
   const res = lodash
     .flatten(result)
@@ -81,35 +68,32 @@ const getList = async (name) => {
   return lodash.sortBy(lodash.uniq(res));
 };
 
-const findPostsBy = async ({ name, jobsBy = '' }) => {
+const findPostsBy = async ({ name, jobsBy = '' }, pageNo) => {
   const key = name === 'qualification' ? 'qualification_required' : name;
-  const regex = {
-    $regex: new RegExp('.*' + jobsBy.replace(/-/g, ' ') + '.*', 'i'),
-  };
-  return await Post.find({ [`general.${key}`]: regex })
-    .select('_id title url general')
-    .sort({ created_at: -1 });
+  const regex = { $regex: new RegExp(`.*${jobsBy.replace(/-/g, ' ')}.*`, 'i') };
+  return await findPosts({ [`general.${key}`]: regex }, pageNo);
 };
 
-const findSearchedPosts = async (value) => {
+const findSearchedPosts = async (value, pageNo) => {
   const $regex = new RegExp('.*' + value + '.*', 'i');
-  return await Post.find({
-    $or: [
-      { title: { $regex } },
-      { 'general.location': { $regex } },
-      { 'general.company': { $regex } },
-      { 'general.qualification_required': { $regex } },
-    ],
-  })
-    .select('_id title url general')
-    .sort({ created_at: -1 });
+  return await findPosts(
+    {
+      $or: [
+        { title: { $regex } },
+        { 'general.location': { $regex } },
+        { 'general.company': { $regex } },
+        { 'general.qualification_required': { $regex } },
+      ],
+    },
+    pageNo
+  );
 };
 
 module.exports = {
-  getRecentPosts,
   findById,
   findByURL,
   getAllPosts,
+  getAllPostsPageCount,
   getLatestJobs,
   getAdmitCards,
   getResults,
