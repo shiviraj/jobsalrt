@@ -68,16 +68,16 @@ const getList = async (name) => {
   return lodash.sortBy(lodash.uniq(res));
 };
 
-const findPostsBy = async ({ name, jobsBy = '', currentPageNo: pageNo }) => {
-  const key = name === 'qualification' ? 'qualification_required' : name;
-  const regex = { $regex: new RegExp(`.*${jobsBy.replace(/-/g, ' ')}.*`, 'i') };
-  return await findPosts({ [`general.${key}`]: regex }, pageNo);
+const findPostsBy = async ({ key, value = '', currentPageNo: pageNo }) => {
+  const keyName = key === 'qualification' ? 'qualification_required' : key;
+  const regex = { $regex: new RegExp(`.*${value.replace(/-/g, ' ')}.*`, 'i') };
+  return await findPosts({ [`general.${keyName}`]: regex }, pageNo);
 };
 
-const findPostsByPageCount = async ({ name, jobsBy = '' }) => {
-  const key = name === 'qualification' ? 'qualification_required' : name;
-  const regex = { $regex: new RegExp(`.*${jobsBy.replace(/-/g, ' ')}.*`, 'i') };
-  return await findTotalPages({ [`general.${key}`]: regex });
+const findPostsByPageCount = async ({ key, value = '' }) => {
+  const keyName = key === 'qualification' ? 'qualification_required' : key;
+  const regex = { $regex: new RegExp(`.*${value.replace(/-/g, ' ')}.*`, 'i') };
+  return await findTotalPages({ [`general.${keyName}`]: regex });
 };
 
 const findSearchedPosts = async ({ value, currentPageNo: pageNo }) => {

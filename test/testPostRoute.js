@@ -15,6 +15,13 @@ describe('Test Post Route', () => {
         .expect(200);
       assert.equal(body.length, 2);
     });
+
+    it('Should give all jobs page count', async () => {
+      await request(app)
+        .get('/api/allJobs/pageCount')
+        .expect(200)
+        .expect({ count: 1 });
+    });
   });
 
   describe('Latest Jobs', () => {
@@ -73,7 +80,7 @@ describe('Test Post Route', () => {
     it('Should serve the list of all locations', async () => {
       const { body } = await request(app)
         .post('/api/getList')
-        .send({ name: 'location' })
+        .send({ key: 'location' })
         .expect(200);
       assert.equal(body.length, 2);
     });
@@ -81,7 +88,7 @@ describe('Test Post Route', () => {
     it('Should serve the list of all company', async () => {
       const { body } = await request(app)
         .post('/api/getList')
-        .send({ name: 'company' })
+        .send({ key: 'company' })
         .expect(200);
       assert.equal(body.length, 1);
     });
@@ -89,7 +96,7 @@ describe('Test Post Route', () => {
     it('Should serve the list of all qualifications', async () => {
       const { body } = await request(app)
         .post('/api/getList')
-        .send({ name: 'qualification' })
+        .send({ key: 'qualification' })
         .expect(200);
       assert.equal(body.length, 4);
     });
@@ -99,7 +106,7 @@ describe('Test Post Route', () => {
     it('Should serve the post by location name', async () => {
       const { body } = await request(app)
         .post('/api/postsBy')
-        .send({ name: 'location', jobsBy: 'uttar-pradesh' })
+        .send({ key: 'location', value: 'uttar-pradesh' })
         .expect(200);
       assert.equal(body.length, 1);
     });
@@ -107,7 +114,7 @@ describe('Test Post Route', () => {
     it('Should serve the by company name', async () => {
       const { body } = await request(app)
         .post('/api/postsBy')
-        .send({ name: 'company', jobsBy: 'UCO-Bank' })
+        .send({ key: 'company', value: 'UCO-Bank' })
         .expect(200);
       assert.equal(body.length, 2);
     });
@@ -115,7 +122,7 @@ describe('Test Post Route', () => {
     it('Should serve the post by qualification name', async () => {
       const { body } = await request(app)
         .post('/api/postsBy')
-        .send({ name: 'qualification', jobsBy: 'Post-Graduate' })
+        .send({ key: 'qualification', value: 'Post-Graduate' })
         .expect(200);
       assert.equal(body.length, 2);
     });
@@ -123,9 +130,25 @@ describe('Test Post Route', () => {
     it('Should serve the post by qualification without value', async () => {
       const { body } = await request(app)
         .post('/api/postsBy')
-        .send({ name: 'qualification' })
+        .send({ key: 'qualification' })
         .expect(200);
       assert.equal(body.length, 2);
+    });
+
+    it('Should serve the pageCount by jobsBy', async () => {
+      await request(app)
+        .post('/api/postsBy/pageCount')
+        .send({ key: 'qualification' })
+        .expect(200)
+        .expect({ count: 1 });
+    });
+
+    it('Should serve the post of specific page by jobsBy', async () => {
+      await request(app)
+        .post('/api/postsBy')
+        .send({ key: 'qualification', currentPageNo: 2 })
+        .expect(200)
+        .expect([]);
     });
   });
 
@@ -160,6 +183,14 @@ describe('Test Post Route', () => {
         .send({ value: '12th' })
         .expect(200);
       assert.equal(body.length, 1);
+    });
+
+    it('Should serve the pageCount of search post', async () => {
+      await request(app)
+        .post('/api/search/pageCount')
+        .send({ value: '12th' })
+        .expect(200)
+        .expect({ count: 1 });
     });
   });
 

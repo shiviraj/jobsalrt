@@ -51,7 +51,7 @@ const serveAdmission = async (req, res) => {
 };
 
 const serveList = async (req, res) => {
-  const list = await Post.getList(req.body.name);
+  const list = await Post.getList(req.body.key);
   res.send(list);
 };
 
