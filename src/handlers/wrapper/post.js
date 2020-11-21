@@ -55,17 +55,21 @@ const getAdmission = async (pageNo) => {
   return await findPosts({ state: { $all: 'admission' } }, pageNo);
 };
 
-// need to refactor
+const collectAllKeys = function (list, key) {
+  return list.reduce((res, { general }) => {
+    return res.concat(...(general[key] ? general[key].split(',') : []));
+  }, []);
+};
+
+const trimAllSpacesInList = (list) =>
+  list.map((item) => item.replace(/\(.*\)/g, '').trim());
+
 const getList = async (name) => {
   const key = name === 'qualification' ? 'qualification_required' : name;
-  const list = await Post.find({}).select(`general.${key}`);
-  const result = list.reduce((res, { general }) => {
-    return res.concat(general[key].split(','));
-  }, []);
-  const res = lodash
-    .flatten(result)
-    .map((item) => item.replace(/\(.*\)/g, '').trim());
-  return lodash.sortBy(lodash.uniq(res));
+  const allPosts = await Post.find({}).select(`general.${key}`);
+  const allKeys = collectAllKeys(allPosts, key);
+  const allTrimmedKeys = trimAllSpacesInList(allKeys);
+  return lodash.sortBy(lodash.uniq(allTrimmedKeys));
 };
 
 const findPostsBy = async ({ key, value = '', currentPageNo: pageNo }) => {
