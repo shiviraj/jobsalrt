@@ -14,7 +14,9 @@ const {
   serveAdmission,
   serveList,
   servePostsBy,
+  servePostsByPageCount,
   serveSearchedPosts,
+  serveSearchedPostsPageCount,
 } = require('../handlers/post');
 
 const route = new express.Router();
@@ -30,7 +32,9 @@ route.get('/admission', serveAdmission);
 route.get('/post/:url', servePost);
 route.post('/getList', serveList);
 route.post('/postsBy', servePostsBy);
+route.post('/postsBy/pageCount', servePostsByPageCount);
 route.post('/search', serveSearchedPosts);
+route.post('/search/pageCount', serveSearchedPostsPageCount);
 route.post('/shareFeedback', saveFeedback);
 
 module.exports = route;

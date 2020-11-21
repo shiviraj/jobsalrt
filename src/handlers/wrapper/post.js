@@ -3,7 +3,7 @@ const Post = require('../../models/post');
 const LIMIT = 50;
 
 const findTotalPages = async (queryObject = {}) => {
-  const postCount = await Post.find(queryObject).count();
+  const postCount = await Post.find(queryObject).countDocuments();
   return lodash.ceil(postCount / LIMIT);
 };
 
@@ -68,13 +68,19 @@ const getList = async (name) => {
   return lodash.sortBy(lodash.uniq(res));
 };
 
-const findPostsBy = async ({ name, jobsBy = '' }, pageNo) => {
+const findPostsBy = async ({ name, jobsBy = '', currentPageNo: pageNo }) => {
   const key = name === 'qualification' ? 'qualification_required' : name;
   const regex = { $regex: new RegExp(`.*${jobsBy.replace(/-/g, ' ')}.*`, 'i') };
   return await findPosts({ [`general.${key}`]: regex }, pageNo);
 };
 
-const findSearchedPosts = async (value, pageNo) => {
+const findPostsByPageCount = async ({ name, jobsBy = '' }) => {
+  const key = name === 'qualification' ? 'qualification_required' : name;
+  const regex = { $regex: new RegExp(`.*${jobsBy.replace(/-/g, ' ')}.*`, 'i') };
+  return await findTotalPages({ [`general.${key}`]: regex });
+};
+
+const findSearchedPosts = async ({ value, currentPageNo: pageNo }) => {
   const $regex = new RegExp('.*' + value + '.*', 'i');
   return await findPosts(
     {
@@ -87,6 +93,18 @@ const findSearchedPosts = async (value, pageNo) => {
     },
     pageNo
   );
+};
+
+const findSearchedPostsPageCount = async (value) => {
+  const $regex = new RegExp('.*' + value + '.*', 'i');
+  return await findTotalPages({
+    $or: [
+      { title: { $regex } },
+      { 'general.location': { $regex } },
+      { 'general.company': { $regex } },
+      { 'general.qualification_required': { $regex } },
+    ],
+  });
 };
 
 module.exports = {
@@ -102,5 +120,7 @@ module.exports = {
   getSyllabus,
   getList,
   findPostsBy,
+  findPostsByPageCount,
   findSearchedPosts,
+  findSearchedPostsPageCount,
 };

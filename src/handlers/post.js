@@ -60,9 +60,19 @@ const servePostsBy = async (req, res) => {
   res.send(posts);
 };
 
+const servePostsByPageCount = async (req, res) => {
+  const count = await Post.findPostsByPageCount(req.body);
+  res.send({ count });
+};
+
 const serveSearchedPosts = async (req, res) => {
-  const posts = await Post.findSearchedPosts(req.body.value);
+  const posts = await Post.findSearchedPosts(req.body);
   res.send(posts);
+};
+
+const serveSearchedPostsPageCount = async (req, res) => {
+  const count = await Post.findSearchedPostsPageCount(req.body.value);
+  res.send({ count });
 };
 
 module.exports = {
@@ -77,5 +87,7 @@ module.exports = {
   serveAdmission,
   serveList,
   servePostsBy,
+  servePostsByPageCount,
   serveSearchedPosts,
+  serveSearchedPostsPageCount,
 };
