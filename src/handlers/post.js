@@ -50,6 +50,21 @@ const serveAdmission = async (req, res) => {
   res.send(post);
 };
 
+const serveOthers = async (req, res) => {
+  const post = await Post.getOthers();
+  res.send(post);
+};
+
+const serveUpcoming = async (req, res) => {
+  const post = await Post.getUpcoming();
+  res.send(post);
+};
+
+const serveExpiringSoon = async (req, res) => {
+  const post = await Post.getExpiringSoon();
+  res.send(post);
+};
+
 const serveList = async (req, res) => {
   const list = await Post.getList(req.body.key);
   res.send(list);
@@ -85,6 +100,9 @@ module.exports = {
   serveAnswerKey,
   serveSyllabus,
   serveAdmission,
+  serveOthers,
+  serveUpcoming,
+  serveExpiringSoon,
   serveList,
   servePostsBy,
   servePostsByPageCount,

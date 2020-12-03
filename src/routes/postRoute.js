@@ -12,6 +12,9 @@ const {
   serveAnswerKey,
   serveSyllabus,
   serveAdmission,
+  serveOthers,
+  serveUpcoming,
+  serveExpiringSoon,
   serveList,
   servePostsBy,
   servePostsByPageCount,
@@ -29,6 +32,9 @@ route.get('/results', serveResults);
 route.get('/answerKey', serveAnswerKey);
 route.get('/syllabus', serveSyllabus);
 route.get('/admission', serveAdmission);
+route.get('/others', serveOthers);
+route.get('/upcoming', serveUpcoming);
+route.get('/expiringSoon', serveExpiringSoon);
 route.get('/post/:url', servePost);
 route.post('/getList', serveList);
 route.post('/postsBy', servePostsBy);

@@ -55,6 +55,27 @@ const getAdmission = async (pageNo) => {
   return await findPosts({ state: { $all: 'admission' } }, pageNo);
 };
 
+const getOthers = async (pageNo) => {
+  return await findPosts({ state: { $all: 'others' } }, pageNo);
+};
+
+const getUpcoming = async (pageNo) => {
+  return await findPosts({ state: { $all: 'upcoming' } }, pageNo);
+};
+
+const getExpiringSoon = async (pageNo) => {
+  return await findPosts(
+    {
+      $and: [
+        { 'general.last_date': { $gt: new Date().getTime() } },
+        { 'general.last_date': { $lt: new Date().getTime() + 518400000 } },
+      ],
+      state: { $nin: 'upcoming' },
+    },
+    pageNo
+  );
+};
+
 const collectAllKeys = function (list, key) {
   return list.reduce((res, { general }) => {
     return res.concat(...(general[key] ? general[key].split(',') : []));
@@ -122,6 +143,9 @@ module.exports = {
   getAnswerKey,
   getAdmission,
   getSyllabus,
+  getOthers,
+  getUpcoming,
+  getExpiringSoon,
   getList,
   findPostsBy,
   findPostsByPageCount,
