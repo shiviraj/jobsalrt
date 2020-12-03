@@ -26,7 +26,7 @@ const getLatestJobs = async (pageNo) => {
   return await findPosts(
     {
       'general.last_date': { $gt: new Date().getTime() },
-      state: { $nin: 'upcoming' },
+      $and: [{ state: { $nin: 'upcoming' } }, { state: { $nin: 'others' } }],
     },
     pageNo
   );
