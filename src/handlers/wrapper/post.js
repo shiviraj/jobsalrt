@@ -70,7 +70,7 @@ const getExpiringSoon = async (pageNo) => {
         { 'general.last_date': { $gt: new Date().getTime() } },
         { 'general.last_date': { $lt: new Date().getTime() + 518400000 } },
       ],
-      state: { $nin: 'upcoming' },
+      state: { $nin: 'others' },
     },
     pageNo
   );
